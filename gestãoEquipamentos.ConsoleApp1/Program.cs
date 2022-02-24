@@ -214,7 +214,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                 existeChamada = false;
                 if (nome[i] == null)
                     continue;
-                Console.WriteLine($"equipmaneto: {nome[i]}\n");
+                Console.WriteLine($"equipmaneto numero: {i}\n");
                 for (int z = 0; z < 1000; z++)
                 {
                     if (titulo[i, z] == null)
