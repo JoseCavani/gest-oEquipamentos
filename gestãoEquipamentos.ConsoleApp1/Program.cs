@@ -94,9 +94,12 @@ namespace gestãoEquipamentos.ConsoleApp1
                         excuilrChamada(ref nome,ref titulo,ref descricao,ref dataAbertura);
                         Console.ReadKey();
                         break;
+                    case 9:
+                        goto fim;
 
                 }
             }
+        fim:;
         }
 
         private static void excuilrChamada(ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura)
@@ -395,7 +398,8 @@ namespace gestãoEquipamentos.ConsoleApp1
                 "5 = ver chamadas para equipamentos\n" +
                 "6 = registrar uma nova chamda para um equipamento\n" +
                 "7 = editar uma chamda de um equipamento\n" +
-                "8 = excluir uma chamda de um equipamento");
+                "8 = excluir uma chamda de um equipamento\n" +
+                "9 = sair");
             if (!(int.TryParse(Console.ReadLine(), out int opcao)))
             {
                 mensagenDeErro("opção invalido ou nao existente");
