@@ -389,9 +389,7 @@ namespace gestãoEquipamentos.ConsoleApp1
 
                 Console.WriteLine($"equipamento: {i}\n" +
                     $"Nome: {nome[i]}\n" +
-                    $"Preco: {preco[i]}\n" +
                     $"Numero da serie: {numeroSerie[i]}\n" +
-                    $"Data de fabricacao: {dataFabricacao[i].ToShortDateString()}\n" +
                     $"Fabricante: {fabricante[i]}\n");
             }
         }
