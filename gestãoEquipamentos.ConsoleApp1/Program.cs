@@ -70,9 +70,8 @@ namespace gestãoEquipamentos.ConsoleApp1
                         break;
                     case 4:
                         Console.Clear();
-                        removerEquipmaneto(ref nome,ref preco,ref numeroSerie,ref dataFabricacao,ref fabricante);
+                        removerEquipmaneto(titulo,ref nome,ref preco,ref numeroSerie,ref dataFabricacao,ref fabricante);
                         Console.ReadKey();
-                        //adicionar check to see if esta vinculado numa chamada ou nao
                         break;
                     case 5:
                         Console.Clear();
@@ -236,14 +235,23 @@ namespace gestãoEquipamentos.ConsoleApp1
             return existeChamada;
         }
 
-        private static void removerEquipmaneto(ref string[] nome,ref decimal[] preco,ref string[] numeroSerie,ref DateTime[] dataFabricacao,ref string[] fabricante)
+        private static void removerEquipmaneto(string[,] titulo,ref string[] nome,ref decimal[] preco,ref string[] numeroSerie,ref DateTime[] dataFabricacao,ref string[] fabricante)
         {
         volta:
             Console.WriteLine("qual o numero do equipamento que deseja remover?");
+
             if (!(int.TryParse(Console.ReadLine(), out int removerNumero)))
             {
                 mensagenDeErro("equipamento invalido ou nao existente");
                 goto volta;
+            }
+            for (int i = 0; i < 1000; i++)
+            {
+                if(titulo[removerNumero,i] != null)
+                {
+                    mensagenDeErro("equipamento contem chamadas");
+                    goto fim;
+                }
             }
             nome[removerNumero] = default;
             preco[removerNumero] = default;
@@ -251,6 +259,7 @@ namespace gestãoEquipamentos.ConsoleApp1
             dataFabricacao[removerNumero] = default;
             fabricante[removerNumero] = default;
             mensagenDeSucesso("item removido com sucesso");
+        fim:;
         }
 
         private static void editarEquipamento(ref string[] nome, ref decimal[] preco,ref string[] numeroSerie,ref  DateTime[] dataFabricacao,ref string[] fabricante)
