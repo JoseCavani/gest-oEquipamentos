@@ -442,7 +442,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                         continue;
 
                     existeChamada = true;
-                    Console.WriteLine($"nome do equipamento: {nome[i]}\n" +
+                    Console.WriteLine($"equipamento: {i}\n" +
                         $"numero da chamda : {z}\n" +
                         $"Titulo: {titulo[i, z]}\n" +
                         $"Descricao: {descricao[i, z]}\n" +
