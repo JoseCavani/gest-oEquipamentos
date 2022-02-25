@@ -12,17 +12,32 @@ namespace gestãoEquipamentos.ConsoleApp1
             string[] numeroSerie = new string[1000];
             DateTime[] dataFabricacao = new DateTime[1000];
             string[] fabricante = new string[1000];
+            bool abertoOuFechado = true;
             int opcao = 0;
             bool existeChamada = false;
 
             string[,] titulo = new string[1000,1000];
             string[,] descricao = new string[1000, 1000];
             DateTime[,] dataAbertura = new DateTime[1000,1000];
+            int[] solicitanteChamada = new int[1000];// motivo pelo qual o solicitante da chamda nao e 2D e porque essa variavel so ira armazena o ID associado ao nome no methodo ele chama o nome associado a esse id
+            bool[,] chamdaAberto = new bool[1000,1000];
 
-
+            string[] nomeSolicitante = new string[1000];
+            string[] emailSolicitante = new string[1000];
+            string[] telefoneSolicitante = new string[1000];
             #endregion
 
             #region valores
+
+            nomeSolicitante[0] = "joão";
+            emailSolicitante[0] = "joão@email.com";
+            telefoneSolicitante[0] = "99999-888";
+
+            nomeSolicitante[1] = "ivo";
+            emailSolicitante[1] = "ivo@email.com";
+            telefoneSolicitante[1] = "444444";
+
+
             nome[0] = "nome1";
             preco[0] = 1005;
             numeroSerie[0] = "abc123";
@@ -32,11 +47,14 @@ namespace gestãoEquipamentos.ConsoleApp1
             titulo[0, 0] = "tit1";
             descricao[0, 0] = "desc1";
             dataAbertura[0, 0] = new DateTime(2022, 02, 02);
+            solicitanteChamada[0] = 0;
+            chamdaAberto[0, 0] = true;
 
             titulo[0, 1] = "tit2";
             descricao[0, 1] = "desc2";
             dataAbertura[0, 1] = new DateTime(2027, 02, 02);
-
+            solicitanteChamada[0] = 0;
+            chamdaAberto[0, 1] = false;
 
             nome[1] = "nome2";
             preco[1] = 1995;
@@ -65,43 +83,218 @@ namespace gestãoEquipamentos.ConsoleApp1
                         break;
                     case 3:
                         Console.Clear();
+                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
                         editarEquipamento(ref nome, ref preco,ref numeroSerie,ref dataFabricacao,ref fabricante);
                         Console.ReadKey();
                         break;
                     case 4:
                         Console.Clear();
+                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
                         removerEquipmaneto(titulo,ref nome,ref preco,ref numeroSerie,ref dataFabricacao,ref fabricante);
                         Console.ReadKey();
                         break;
                     case 5:
                         Console.Clear();
-                        mostrarChamadas(ref nome,ref existeChamada,ref titulo,ref descricao,ref dataAbertura);
+                        abertoOuFechado = abertoOuFechados(abertoOuFechado);
+                        mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
                         Console.ReadKey();
                         break;
                     case 6:
                         Console.Clear();
-                        registarNovaChamda(ref nome,ref titulo,ref descricao,ref dataAbertura);
+                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
+                        registarNovaChamda(ref chamdaAberto,ref nome,ref titulo,ref descricao,ref dataAbertura, nomeSolicitante,ref solicitanteChamada);
                         Console.ReadKey();
                         break;
                     case 7:
                         Console.Clear();
-                        editarChamda(ref nome,ref titulo,ref descricao,ref dataAbertura);
+                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
+                        mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
+                        editarChamda(ref nome,ref titulo,ref descricao,ref dataAbertura,ref solicitanteChamada,nomeSolicitante);
                         Console.ReadKey();
                         break;
                     case 8:
                         Console.Clear();
-                        excuilrChamada(ref nome,ref titulo,ref descricao,ref dataAbertura);
+                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
+                        mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
+                        excuilrChamada(ref chamdaAberto,nome);
                         Console.ReadKey();
                         break;
                     case 9:
+                        Console.Clear();
+                        mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
+                        Console.ReadKey();
+                        break;
+                    case 10:
+                        Console.Clear();
+                        registrarSolicitante(ref nomeSolicitante,ref emailSolicitante,ref telefoneSolicitante);
+                        Console.ReadKey();
+                        break;
+                    case 11:
+                        Console.Clear();
+                        mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
+                        editarSolicitante(ref nomeSolicitante,ref emailSolicitante,ref telefoneSolicitante);
+                        Console.ReadKey();
+                        break;
+                    case 12:
+                        Console.Clear();
+                        mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
+                        removerSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
+                        Console.ReadKey();
+                        break;
+                    case 13:
+                        Console.Clear();
+                        maquinasNumeroProblemas(nome, titulo);
+                        break;
+                    case 14:
                         goto fim;
-
                 }
             }
         fim:;
         }
 
-        private static void excuilrChamada(ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura)
+        private static bool abertoOuFechados(bool abertoOuFechado)
+        {
+        volta:
+            Console.WriteLine("gostaria de ver as chamdas 0 = abertas ou 1 = fechadas");
+            if (!(int.TryParse(Console.ReadLine(), out int opcaoChamda)) || opcaoChamda < 0 || opcaoChamda > 1)
+            {
+                mensagenDeErro("opcao invalido");
+                goto volta;
+            }
+            if (opcaoChamda == 0)
+                abertoOuFechado = true;
+            else
+                abertoOuFechado = false;
+            return abertoOuFechado;
+        }
+
+        private static void maquinasNumeroProblemas(string[] nome, string[,] titulo)
+        {
+            int contador = 1;// valor default de um int[] e 0 então fiz isso para que possa mostrar todos os equipamentos independte se tem ou nao chamdados
+            int[] qunatidadeChamadas = new int[1000];
+            for (int i = 0; i < 1000; i++)
+            {
+                if (nome[i] == null)
+                    continue;
+                else
+                    for (int z = 0; z < 1000; z++)
+                    {
+                        if (titulo[i, z] == null)
+                            continue;
+                        else
+                            contador++;
+                    }
+                qunatidadeChamadas[i] = contador;
+                contador = 1;
+            }
+            Array.Sort(qunatidadeChamadas);
+            Array.Reverse(qunatidadeChamadas);
+            for (int i = 0; i < qunatidadeChamadas.Length; i++)
+            {
+                if (qunatidadeChamadas[i] != 0)
+                    Console.WriteLine($"maquina : {i} contem : {qunatidadeChamadas[i] - 1} chamdas");//{qunatidadeChamadas[i] - 1} pq inicializei com um
+            }
+            Console.ReadKey();
+        }
+
+        private static void removerSolicitante(string[] nomeSolicitante, string[] emailSolicitante, string[] telefoneSolicitante)
+        {
+        volta:
+            Console.WriteLine("qual o numero do solicitante que deseja excluir?");
+
+            if (!(int.TryParse(Console.ReadLine(), out int removerNumero)))
+            {
+                mensagenDeErro("solicitante invalido ou nao existente");
+                goto volta;
+            }
+
+            nomeSolicitante[removerNumero] = default;
+            emailSolicitante[removerNumero] = default;
+            telefoneSolicitante[removerNumero] = default;
+            mensagenDeSucesso("solicitante removido com sucesso");
+        }
+
+        private static void editarSolicitante(ref string[] nomeSolicitante,ref string[] emailSolicitante,ref string[] telefoneSolicitante)
+        {
+        volta:
+            Console.WriteLine("qual o id do solicitante que deseja alterar?");
+            if (!(int.TryParse(Console.ReadLine(), out int alterarNumero)))
+            {
+                mensagenDeErro("solicitante invalido ou nao existente");
+                goto volta;
+            }
+        volta5:
+            Console.WriteLine("o que deseja alterar?\n" +
+                "1 = nome\n" +
+                "2 = email\n" +
+                "3 = telefone\n");
+            if (!(int.TryParse(Console.ReadLine(), out int opcaoAlterar)))
+            {
+                mensagenDeErro("opção invalido ou nao existente");
+                goto volta5;
+            }
+
+            switch (opcaoAlterar)
+            {
+
+
+                case 1:
+                volta4:
+                    Console.WriteLine("digite o nome do solicitante");
+                    nomeSolicitante[alterarNumero] = Console.ReadLine();
+                    if (VerficarNome(nomeSolicitante[alterarNumero]))
+                        goto volta4;
+                    break;
+                case 2:
+                    Console.WriteLine("digite o email do solicitante");
+                    emailSolicitante[alterarNumero] = Console.ReadLine();
+                    break;
+                case 3:
+                    Console.WriteLine("digite o telefone do solicitante");
+                    telefoneSolicitante[alterarNumero] = Console.ReadLine();
+                    break;
+            }
+            mensagenDeSucesso("solicitante editado com sucesso");
+        }
+
+        private static void registrarSolicitante(ref string[] nomeSolicitante,ref string[] emailSolicitante,ref string[] telefoneSolicitante)
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                if (nomeSolicitante[i] == null)
+                {
+                volta7:
+                    Console.WriteLine("digite o nome do solicitante");
+                    nomeSolicitante[i] = Console.ReadLine();
+                    if (VerficarNome(nomeSolicitante[i]))
+                        goto volta7;
+
+                    Console.WriteLine("digite o email do solicitante");
+                    emailSolicitante[i] = Console.ReadLine();
+
+                    Console.WriteLine("digite o telefone do solicitante");
+                    telefoneSolicitante[i] = Console.ReadLine();
+                    mensagenDeSucesso("solicitante registrado com successo");
+                    break;
+                }
+            }
+        }
+
+        private static void mostrarSolicitante(string[] nomeSolicitante, string[] emailSolicitante, string[] telefoneSolicitante)
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                if (nomeSolicitante[i] == null)
+                    continue;
+                Console.WriteLine($"id : {i}\n" +
+                    $"nome do solicitante : {nomeSolicitante[i]}\n" +
+                    $"email do solicitante : {emailSolicitante[i]}\n" +
+                    $"telefone do solicitante : {telefoneSolicitante[i]}\n");
+
+            }
+        }
+
+        private static void excuilrChamada(ref bool[,] chamdaAberto,string[] nome)
         {
         volta:
             Console.WriteLine("qual o numero do equipamento com a chamda ao qual quer exluir");
@@ -113,18 +306,16 @@ namespace gestãoEquipamentos.ConsoleApp1
 
         volta2:
             Console.WriteLine("qual a chamda que deseja excluir?");
-            if (!(int.TryParse(Console.ReadLine(), out int alterarNumeroChamda)) || titulo[alterarNumero, alterarNumeroChamda] == null)
+            if (!(int.TryParse(Console.ReadLine(), out int alterarNumeroChamda)) || chamdaAberto[alterarNumero, alterarNumeroChamda] == false)
             {
                 mensagenDeErro("chamdad invalido ou nao existente");
                 goto volta2;
             }
-            titulo[alterarNumero, alterarNumeroChamda] = default;
-            descricao[alterarNumero, alterarNumeroChamda] = default;
-            dataAbertura[alterarNumero, alterarNumeroChamda] = default;
+            chamdaAberto[alterarNumero, alterarNumeroChamda] = false;
             mensagenDeSucesso("chamda excluida com sucesso");
         }
 
-        private static void editarChamda(ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura)
+        private static void editarChamda(ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura,ref int[] solicitanteChamada,string[] nomeSolicitante)
         {
         volta:
             Console.WriteLine("qual o numero do equipamento com a chamda ao qual quer editar");
@@ -146,8 +337,9 @@ namespace gestãoEquipamentos.ConsoleApp1
             Console.WriteLine("o que deseja alterar?\n" +
                 "1 = titulo\n" +
                 "2 = descricao\n" +
-                "3 = data de abertura\n");
-            if (!(int.TryParse(Console.ReadLine(), out int opcaoAlterar)))
+                "3 = data de abertura\n" +
+                "4 = solicitante");
+            if (!(int.TryParse(Console.ReadLine(), out int opcaoAlterar)) || opcaoAlterar>4|| opcaoAlterar <1)
             {
                 mensagenDeErro("opção invalido ou nao existente");
                 goto volta5;
@@ -172,12 +364,26 @@ namespace gestãoEquipamentos.ConsoleApp1
                         goto volta3;
                     }
                     break;
-
+                case 4:
+                    for (int z = 0; z < 1000; z++)
+                    {
+                        if (nomeSolicitante[z] == null)
+                            continue;
+                        Console.WriteLine($"{z} = {nomeSolicitante[z]}");
+                    }
+                volta4:
+                    Console.WriteLine("digite o ID do solicitante da chamada\n");
+                    if (!(int.TryParse(Console.ReadLine(), out solicitanteChamada[alterarNumeroChamda])))
+                    {
+                        mensagenDeErro("solicitante invalido");
+                        goto volta4;
+                    }
+                    break;
             }
             mensagenDeSucesso("chamada editada com sucesso");
         }
 
-        private static void registarNovaChamda(ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura)
+        private static void registarNovaChamda(ref bool[,] chamadaAberto,ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura,string[] nomeSolicitante,ref int[] solicitanteChamada)
         {
         volta:
             Console.WriteLine("qual o numero do equipamento para registar uma nova chamda?");
@@ -202,37 +408,52 @@ namespace gestãoEquipamentos.ConsoleApp1
                     mensagenDeErro("data invalido");
                     goto volta2;
                 }
+
+                for (int z = 0; z < 1000; z++)
+                {
+                    if (nomeSolicitante[z] == null)
+                        continue;
+                    Console.WriteLine($"{z} = {nomeSolicitante[z]}");
+                }
+            volta3:
+                Console.WriteLine("digite o solicitante da chamada\n");
+                if (!(int.TryParse(Console.ReadLine(), out solicitanteChamada[i])))
+                {
+                    mensagenDeErro("solicitante invalido");
+                    goto volta3;
+                }
+                chamadaAberto[NumeroEquipamento, i] = true;
                 mensagenDeSucesso("chamada registrado com sucesso");
                 break;
             }
         }
 
-        private static bool mostrarChamadas(ref string[] nome,ref bool existeChamada,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura)
+        private static void mostrarChamadas(bool abertoOuFechado,bool[,] abertoChamda, ref string[] nome,ref bool existeChamada,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura,string[] nomeSolicitante,int[] solicitanteChamada)
         {
+          
             for (int i = 0; i < 1000; i++)
             {
                 existeChamada = false;
                 if (nome[i] == null)
                     continue;
-                Console.WriteLine($"equipmaneto numero: {i}\n");
                 for (int z = 0; z < 1000; z++)
                 {
-                    if (titulo[i, z] == null)
+                    if (titulo[i,z] == null || abertoChamda[i,z] != abertoOuFechado)
                         continue;
 
                     existeChamada = true;
-                    Console.WriteLine($"numero da chamda : {z}\n" +
+                    Console.WriteLine($"nome do equipamento: {nome[i]}\n" +
+                        $"numero da chamda : {z}\n" +
                         $"Titulo: {titulo[i, z]}\n" +
                         $"Descricao: {descricao[i, z]}\n" +
                         $"Data de abertura: {dataAbertura[i, z].ToShortDateString()}\n" +
-                        $"dias desde o inicio da abertura {(DateTime.Now - dataAbertura[i, z]).Days}\n");
+                        $"dias desde o inicio da abertura {(DateTime.Now - dataAbertura[i, z]).Days}\n" +
+                        $"solicitante da chamda {nomeSolicitante[solicitanteChamada[z]]}\n");
                 }
                 if (existeChamada == false)
-                    Console.WriteLine("não há chamada\n");
+                    Console.WriteLine($"não há chamada para o equipamento {nome[i]}\n");
 
             }
-            Console.ReadKey();
-            return existeChamada;
         }
 
         private static void removerEquipmaneto(string[,] titulo,ref string[] nome,ref decimal[] preco,ref string[] numeroSerie,ref DateTime[] dataFabricacao,ref string[] fabricante)
@@ -406,7 +627,12 @@ namespace gestãoEquipamentos.ConsoleApp1
                 "6 = registrar uma nova chamda para um equipamento\n" +
                 "7 = editar uma chamda de um equipamento\n" +
                 "8 = excluir uma chamda de um equipamento\n" +
-                "9 = sair");
+                "9 = mostrar solicitantes\n" +
+                "10 = registar novo solicitante\n" +
+                "11 = editar um solicitante\n" +
+                "12 = excluir um solicitante\n" +
+                "13 = numero de chamdas por maquina\n" +
+                "14 = sair");
             if (!(int.TryParse(Console.ReadLine(), out int opcao)))
             {
                 mensagenDeErro("opção invalido ou nao existente");
