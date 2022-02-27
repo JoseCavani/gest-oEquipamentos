@@ -107,14 +107,12 @@ namespace gestãoEquipamentos.ConsoleApp1
                         break;
                     case 7:
                         Console.Clear();
-                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
                         mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
                         editarChamda(ref nome,ref titulo,ref descricao,ref dataAbertura,ref solicitanteChamada,nomeSolicitante);
                         Console.ReadKey();
                         break;
                     case 8:
                         Console.Clear();
-                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
                         mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
                         excuilrChamada(ref chamdaAberto,nome);
                         Console.ReadKey();
