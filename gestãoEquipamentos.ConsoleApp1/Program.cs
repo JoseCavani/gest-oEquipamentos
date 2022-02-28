@@ -90,7 +90,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                     case 4:
                         Console.Clear();
                         mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
-                        removerEquipmaneto(titulo,ref nome,ref preco,ref numeroSerie,ref dataFabricacao,ref fabricante);
+                        removerEquipmaneto(chamdaAberto, titulo,ref nome,ref preco,ref numeroSerie,ref dataFabricacao,ref fabricante);
                         Console.ReadKey();
                         break;
                     case 5:
@@ -107,14 +107,14 @@ namespace gestãoEquipamentos.ConsoleApp1
                         break;
                     case 7:
                         Console.Clear();
-                        mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
-                        editarChamda(ref nome,ref titulo,ref descricao,ref dataAbertura,ref solicitanteChamada,nomeSolicitante);
+                        mostrarChamadas(true, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
+                        editarChamda(chamdaAberto,ref nome,ref titulo,ref descricao,ref dataAbertura,ref solicitanteChamada,nomeSolicitante);
                         Console.ReadKey();
                         break;
                     case 8:
                         Console.Clear();
-                        mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
-                        excuilrChamada(ref chamdaAberto,nome);
+                        mostrarChamadas(true, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
+                        excuilrChamada(ref chamdaAberto,nome,titulo);
                         Console.ReadKey();
                         break;
                     case 9:
@@ -292,7 +292,7 @@ namespace gestãoEquipamentos.ConsoleApp1
             }
         }
 
-        private static void excuilrChamada(ref bool[,] chamdaAberto,string[] nome)
+        private static void excuilrChamada(ref bool[,] chamdaAberto, string[] nome, string[,] titulo)
         {
         volta:
             Console.WriteLine("qual o numero do equipamento com a chamda ao qual quer exluir");
@@ -301,7 +301,13 @@ namespace gestãoEquipamentos.ConsoleApp1
                 mensagenDeErro("numero invalido ou nao existente");
                 goto volta;
             }
+            bool haChamada = veSeHaChamada(alterarNumero, titulo, chamdaAberto);
 
+            if (haChamada == false)
+            {
+                mensagenDeErro("não ha chamdas para esse equipamento");
+                goto fim;
+            }
         volta2:
             Console.WriteLine("qual a chamda que deseja excluir?");
             if (!(int.TryParse(Console.ReadLine(), out int alterarNumeroChamda)) || chamdaAberto[alterarNumero, alterarNumeroChamda] == false)
@@ -309,11 +315,13 @@ namespace gestãoEquipamentos.ConsoleApp1
                 mensagenDeErro("chamdad invalido ou nao existente");
                 goto volta2;
             }
+
             chamdaAberto[alterarNumero, alterarNumeroChamda] = false;
             mensagenDeSucesso("chamda excluida com sucesso");
+        fim:;
         }
 
-        private static void editarChamda(ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura,ref int[] solicitanteChamada,string[] nomeSolicitante)
+        private static void editarChamda(bool[,] chamdaAberto,ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura,ref int[] solicitanteChamada,string[] nomeSolicitante)
         {
         volta:
             Console.WriteLine("qual o numero do equipamento com a chamda ao qual quer editar");
@@ -322,22 +330,32 @@ namespace gestãoEquipamentos.ConsoleApp1
                 mensagenDeErro("equipamento invalido ou nao existente");
                 goto volta;
             }
+            bool haChamada = veSeHaChamada(alterarNumero, titulo, chamdaAberto);
 
+            if (haChamada == false)
+            {
+                mensagenDeErro("não ha chamadas para esse equipamento");
+                goto fim;
+            }
         volta2:
             Console.WriteLine("qual a chamda que deseja alterar?");
             if (!(int.TryParse(Console.ReadLine(), out int alterarNumeroChamda)) || titulo[alterarNumero, alterarNumeroChamda] == null)
             {
+               
                 mensagenDeErro("chamda invalido ou nao existente");
                 goto volta2;
             }
 
-        volta5:
+        
+
+
+            volta5:
             Console.WriteLine("o que deseja alterar?\n" +
                 "1 = titulo\n" +
                 "2 = descricao\n" +
                 "3 = data de abertura\n" +
                 "4 = solicitante");
-            if (!(int.TryParse(Console.ReadLine(), out int opcaoAlterar)) || opcaoAlterar>4|| opcaoAlterar <1)
+            if (!(int.TryParse(Console.ReadLine(), out int opcaoAlterar)) || opcaoAlterar > 4 || opcaoAlterar < 1)
             {
                 mensagenDeErro("opção invalido ou nao existente");
                 goto volta5;
@@ -379,6 +397,23 @@ namespace gestãoEquipamentos.ConsoleApp1
                     break;
             }
             mensagenDeSucesso("chamada editada com sucesso");
+        fim:;
+        }
+
+        private static bool veSeHaChamada(int alterarNumero, string[,] titulo, bool[,] chamadaAberto)
+        {
+            bool haChamada = false;
+
+       
+                for (int z = 0; z < 1000; z++)
+                {
+
+                    if (titulo[alterarNumero, z] != null && chamadaAberto[alterarNumero, z] == true)
+                        haChamada = true;
+                }
+            
+
+            return haChamada;
         }
 
         private static void registarNovaChamda(ref bool[,] chamadaAberto,ref string[] nome,ref string[,] titulo,ref string[,] descricao,ref DateTime[,] dataAbertura,string[] nomeSolicitante,ref int[] solicitanteChamada)
@@ -449,24 +484,32 @@ namespace gestãoEquipamentos.ConsoleApp1
                         $"solicitante da chamda {nomeSolicitante[solicitanteChamada[z]]}\n");
                 }
                 if (existeChamada == false)
-                    Console.WriteLine($"não há chamada para o equipamento {nome[i]}\n");
+                    Console.WriteLine($"não há chamada para o equipamento {i}\n");
 
             }
         }
 
-        private static void removerEquipmaneto(string[,] titulo,ref string[] nome,ref decimal[] preco,ref string[] numeroSerie,ref DateTime[] dataFabricacao,ref string[] fabricante)
+        private static void removerEquipmaneto(bool[,] chamdaAberto, string[,] titulo,ref string[] nome,ref decimal[] preco,ref string[] numeroSerie,ref DateTime[] dataFabricacao,ref string[] fabricante)
         {
+            bool haEquipamento = veSeHaEquipamento(nome);
+
+            if (haEquipamento == false)
+            {
+                mensagenDeErro("não ha equipamentos");
+                goto fim;
+            }
         volta:
             Console.WriteLine("qual o numero do equipamento que deseja remover?");
 
-            if (!(int.TryParse(Console.ReadLine(), out int removerNumero)))
+            if (!(int.TryParse(Console.ReadLine(), out int removerNumero)) || nome[removerNumero] == null)
             {
                 mensagenDeErro("equipamento invalido ou nao existente");
                 goto volta;
             }
+
             for (int i = 0; i < 1000; i++)
             {
-                if(titulo[removerNumero,i] != null)
+                if(chamdaAberto[removerNumero,i] == true)
                 {
                     mensagenDeErro("equipamento contem chamadas");
                     goto fim;
@@ -483,9 +526,16 @@ namespace gestãoEquipamentos.ConsoleApp1
 
         private static void editarEquipamento(ref string[] nome, ref decimal[] preco,ref string[] numeroSerie,ref  DateTime[] dataFabricacao,ref string[] fabricante)
         {
+            bool haEquipamento = veSeHaEquipamento(nome);
+
+            if (haEquipamento == false)
+            {
+                mensagenDeErro("não ha equipamentos");
+                goto fim;
+            }
         volta:
             Console.WriteLine("qual o numero do equipamento que deseja alterar?");
-            if (!(int.TryParse(Console.ReadLine(), out int alterarNumero)))
+            if (!(int.TryParse(Console.ReadLine(), out int alterarNumero)) || nome[alterarNumero] == null)
             {
                 mensagenDeErro("equipamento invalido ou nao existente");
                 goto volta;
@@ -508,7 +558,7 @@ namespace gestãoEquipamentos.ConsoleApp1
 
 
                 case 1:
-                    volta4:
+                volta4:
                     Console.WriteLine("digite o nome do equipamento");
                     nome[alterarNumero] = Console.ReadLine();
                     if (VerficarNome(nome[alterarNumero]))
@@ -542,6 +592,19 @@ namespace gestãoEquipamentos.ConsoleApp1
                     break;
             }
             mensagenDeSucesso("equipmaneto editado com sucesso");
+        fim:;
+        }
+
+        private static bool veSeHaEquipamento(string[] nome)
+        {
+            bool haEquipamento = false;
+            foreach (var item in nome)
+            {
+                if (item != null)
+                    haEquipamento = true;
+            }
+
+            return haEquipamento;
         }
 
         private static void mensagenDeSucesso(string mensagen)
