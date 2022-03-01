@@ -19,8 +19,9 @@ namespace gestãoEquipamentos.ConsoleApp1
             string[,] titulo = new string[1000,1000];
             string[,] descricao = new string[1000, 1000];
             DateTime[,] dataAbertura = new DateTime[1000,1000];
-            int[] solicitanteChamada = new int[1000];// motivo pelo qual o solicitante da chamda nao e 2D e porque essa variavel so ira armazena o ID associado ao nome no methodo ele chama o nome associado a esse id
             bool[,] chamdaAberto = new bool[1000,1000];
+            int[] solicitanteChamada = new int[1000];// motivo pelo qual o solicitante da chamda nao e 2D e porque essa variavel so ira armazena o ID associado ao nome no methodo ele chama o nome associado a esse id
+
 
             string[] nomeSolicitante = new string[1000];
             string[] emailSolicitante = new string[1000];
@@ -197,6 +198,20 @@ namespace gestãoEquipamentos.ConsoleApp1
 
         private static void removerSolicitante(string[] nomeSolicitante, string[] emailSolicitante, string[] telefoneSolicitante)
         {
+            bool haSolicitante = false;
+            foreach (var item in nomeSolicitante)
+            {
+                if (item != null)
+                {
+                    haSolicitante = true;
+                    break;
+                }
+            }
+            if (haSolicitante == false)
+            {
+                mensagenDeErro("nao existe solicitante");
+                goto fim;
+            }
         volta:
             Console.WriteLine("qual o numero do solicitante que deseja excluir?");
 
@@ -210,17 +225,35 @@ namespace gestãoEquipamentos.ConsoleApp1
             emailSolicitante[removerNumero] = default;
             telefoneSolicitante[removerNumero] = default;
             mensagenDeSucesso("solicitante removido com sucesso");
+        fim:;
         }
 
         private static void editarSolicitante(ref string[] nomeSolicitante,ref string[] emailSolicitante,ref string[] telefoneSolicitante)
         {
+            bool haSolicitante = false;
+            foreach (var item in nomeSolicitante)
+            {
+                if (item != null)
+                {
+                    haSolicitante = true;
+                    break;
+                }
+            }
+            if (haSolicitante == false)
+            {
+                mensagenDeErro("nao existe solicitante");
+                goto fim;
+            }
         volta:
             Console.WriteLine("qual o id do solicitante que deseja alterar?");
-            if (!(int.TryParse(Console.ReadLine(), out int alterarNumero)))
+            if (!(int.TryParse(Console.ReadLine(), out int alterarNumero)) || nomeSolicitante[alterarNumero] == null)
             {
                 mensagenDeErro("solicitante invalido ou nao existente");
                 goto volta;
             }
+
+
+
         volta5:
             Console.WriteLine("o que deseja alterar?\n" +
                 "1 = nome\n" +
@@ -253,6 +286,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                     break;
             }
             mensagenDeSucesso("solicitante editado com sucesso");
+            fim:;
         }
 
         private static void registrarSolicitante(ref string[] nomeSolicitante,ref string[] emailSolicitante,ref string[] telefoneSolicitante)
@@ -707,7 +741,6 @@ namespace gestãoEquipamentos.ConsoleApp1
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(mensagen);
-            Console.ReadKey();
             Console.ResetColor();
         }
     }
