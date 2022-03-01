@@ -198,15 +198,7 @@ namespace gestãoEquipamentos.ConsoleApp1
 
         private static void removerSolicitante(string[] nomeSolicitante, string[] emailSolicitante, string[] telefoneSolicitante)
         {
-            bool haSolicitante = false;
-            foreach (var item in nomeSolicitante)
-            {
-                if (item != null)
-                {
-                    haSolicitante = true;
-                    break;
-                }
-            }
+            bool haSolicitante = haSolicitantes(nomeSolicitante);
             if (haSolicitante == false)
             {
                 mensagenDeErro("nao existe solicitante");
@@ -228,7 +220,7 @@ namespace gestãoEquipamentos.ConsoleApp1
         fim:;
         }
 
-        private static void editarSolicitante(ref string[] nomeSolicitante,ref string[] emailSolicitante,ref string[] telefoneSolicitante)
+        private static bool haSolicitantes(string[] nomeSolicitante)
         {
             bool haSolicitante = false;
             foreach (var item in nomeSolicitante)
@@ -239,6 +231,13 @@ namespace gestãoEquipamentos.ConsoleApp1
                     break;
                 }
             }
+
+            return haSolicitante;
+        }
+
+        private static void editarSolicitante(ref string[] nomeSolicitante,ref string[] emailSolicitante,ref string[] telefoneSolicitante)
+        {
+            bool haSolicitante = haSolicitantes(nomeSolicitante);
             if (haSolicitante == false)
             {
                 mensagenDeErro("nao existe solicitante");
