@@ -68,84 +68,151 @@ namespace gestãoEquipamentos.ConsoleApp1
             while (true)
             {
                 Console.Clear();
-                opcao = selecionarOpcao();
+                opcao = selecionarOpcao("digite uma opção \n" +
+                "1 - equipamentos\n" +
+                "2 - chamadas\n" +
+                "3 - solicitantes\n" +
+                "4 - maquinas com maiores problemas\n" +
+                "5 - sair");
 
                 switch (opcao)
                 {
                     case 1:
                         Console.Clear();
-                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
-                        Console.ReadKey();
+                        opcao = selecionarOpcao("digite uma opção \n" +
+              "1 - mostrar equipamentos\n" +
+              "2 - registar Equipamentos\n" +
+              "3 - editar Equipamentos\n" +
+              "4 - remover Equipmanetos\n" +
+              "5 - sair");
+                        switch (opcao)
+                        {
+                            case 1:
+                                Console.Clear();
+                                mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
+                                Console.ReadKey();
+                                break;
+                            case 2:
+                                Console.Clear();
+                                registarEquipamento(ref nome, ref preco, ref numeroSerie, ref dataFabricacao, ref fabricante);
+                                Console.ReadKey();
+                                break;
+                            case 3:
+                                Console.Clear();
+                                mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
+                                editarEquipamento(ref nome, ref preco, ref numeroSerie, ref dataFabricacao, ref fabricante);
+                                Console.ReadKey();
+                                break;
+                            case 4:
+                                Console.Clear();
+                                mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
+                                removerEquipmaneto(chamdaAberto, titulo, ref nome, ref preco, ref numeroSerie, ref dataFabricacao, ref fabricante);
+                                Console.ReadKey();
+                                break;
+                            case 5:
+                                break;
+                            default:
+                                mensagenDeErro("numero invalido");
+                                Console.ReadKey();
+                                break;
+                        }
                         break;
+
+
                     case 2:
                         Console.Clear();
-                        registarEquipamento(ref nome, ref preco, ref numeroSerie, ref dataFabricacao, ref fabricante);
-                        Console.ReadKey();
+                        opcao = selecionarOpcao("digite uma opção \n" +
+              "1 - Mostrar chamadas\n" +
+              "2 - Registar nova chamda\n" +
+              "3 - Editar chamada\n" +
+              "4 - Excluir chamda\n" +
+              "5 - sair");
+                        switch (opcao)
+                        {
+                            case 1:
+                                Console.Clear();
+                                abertoOuFechado = abertoOuFechados(abertoOuFechado);
+                                mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
+                                Console.ReadKey();
+                                break;
+                            case 2:
+                                Console.Clear();
+                                mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
+                                registarNovaChamda(ref chamdaAberto, ref nome, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, ref solicitanteChamada);
+                                Console.ReadKey();
+                                break;
+                            case 3:
+                                Console.Clear();
+                                mostrarChamadas(true, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
+                                editarChamda(chamdaAberto, ref nome, ref titulo, ref descricao, ref dataAbertura, ref solicitanteChamada, nomeSolicitante);
+                                Console.ReadKey();
+                                break;
+                            case 4:
+                                Console.Clear();
+                                mostrarChamadas(true, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
+                                excuilrChamada(ref chamdaAberto, nome, titulo);
+                                Console.ReadKey();
+                                break;
+                            case 5:
+                                break;
+                            default:
+                                mensagenDeErro("numero invalido");
+                                Console.ReadKey();
+                                break;
+                        }
+
                         break;
+
                     case 3:
                         Console.Clear();
-                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
-                        editarEquipamento(ref nome, ref preco,ref numeroSerie,ref dataFabricacao,ref fabricante);
-                        Console.ReadKey();
+                        opcao = selecionarOpcao("digite uma opção \n" +
+              "1 - Mostrar solicitante\n" +
+              "2 - Registar novo solicitante\n" +
+              "3 - Editar solicitante\n" +
+              "4 - Excluir solicitante\n" +
+              "5 - sair");
+                        switch (opcao)
+                        {
+                            case 1:
+                                Console.Clear();
+                                mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
+                                Console.ReadKey();
+                                break;
+                            case 2:
+                                Console.Clear();
+                                registrarSolicitante(ref nomeSolicitante, ref emailSolicitante, ref telefoneSolicitante);
+                                Console.ReadKey();
+                                break;
+                            case 3:
+                                Console.Clear();
+                                mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
+                                editarSolicitante(ref nomeSolicitante, ref emailSolicitante, ref telefoneSolicitante);
+                                Console.ReadKey();
+                                break;
+                            case 4:
+                                Console.Clear();
+                                mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
+                                removerSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
+                                Console.ReadKey();
+                                break;
+                            case 5:
+                                break;
+                            default:
+                                mensagenDeErro("numero invalido");
+                                Console.ReadKey();
+                                break;
+                        }
                         break;
                     case 4:
                         Console.Clear();
-                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
-                        removerEquipmaneto(chamdaAberto, titulo,ref nome,ref preco,ref numeroSerie,ref dataFabricacao,ref fabricante);
-                        Console.ReadKey();
-                        break;
-                    case 5:
-                        Console.Clear();
-                        abertoOuFechado = abertoOuFechados(abertoOuFechado);
-                        mostrarChamadas(abertoOuFechado, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
-                        Console.ReadKey();
-                        break;
-                    case 6:
-                        Console.Clear();
-                        mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
-                        registarNovaChamda(ref chamdaAberto,ref nome,ref titulo,ref descricao,ref dataAbertura, nomeSolicitante,ref solicitanteChamada);
-                        Console.ReadKey();
-                        break;
-                    case 7:
-                        Console.Clear();
-                        mostrarChamadas(true, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
-                        editarChamda(chamdaAberto,ref nome,ref titulo,ref descricao,ref dataAbertura,ref solicitanteChamada,nomeSolicitante);
-                        Console.ReadKey();
-                        break;
-                    case 8:
-                        Console.Clear();
-                        mostrarChamadas(true, chamdaAberto, ref nome, ref existeChamada, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, solicitanteChamada);
-                        excuilrChamada(ref chamdaAberto,nome,titulo);
-                        Console.ReadKey();
-                        break;
-                    case 9:
-                        Console.Clear();
-                        mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
-                        Console.ReadKey();
-                        break;
-                    case 10:
-                        Console.Clear();
-                        registrarSolicitante(ref nomeSolicitante,ref emailSolicitante,ref telefoneSolicitante);
-                        Console.ReadKey();
-                        break;
-                    case 11:
-                        Console.Clear();
-                        mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
-                        editarSolicitante(ref nomeSolicitante,ref emailSolicitante,ref telefoneSolicitante);
-                        Console.ReadKey();
-                        break;
-                    case 12:
-                        Console.Clear();
-                        mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
-                        removerSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
-                        Console.ReadKey();
-                        break;
-                    case 13:
-                        Console.Clear();
                         maquinasNumeroProblemas(nome, titulo);
                         break;
-                    case 14:
+                    case 5:
                         goto fim;
+                    default:
+                        mensagenDeErro("numero invalido");
+                        Console.ReadKey();
+                        break;
                 }
             }
         fim:;
@@ -709,24 +776,10 @@ namespace gestãoEquipamentos.ConsoleApp1
             }
         }
 
-        static int selecionarOpcao()
+        static int selecionarOpcao(string mensagen)
         {
         volta:
-            Console.WriteLine("digite uma opção \n" +
-                "1 = mostrar equipamentos\n" +
-                "2 = registrar novo equipamento\n" +
-                "3 = editar um equipamento\n" +
-                "4 = deletar um eqipmaneto \n" +
-                "5 = ver chamadas para equipamentos\n" +
-                "6 = registrar uma nova chamda para um equipamento\n" +
-                "7 = editar uma chamda de um equipamento\n" +
-                "8 = excluir uma chamda de um equipamento\n" +
-                "9 = mostrar solicitantes\n" +
-                "10 = registar novo solicitante\n" +
-                "11 = editar um solicitante\n" +
-                "12 = excluir um solicitante\n" +
-                "13 = numero de chamdas por maquina\n" +
-                "14 = sair");
+            Console.WriteLine(mensagen);
             if (!(int.TryParse(Console.ReadLine(), out int opcao)))
             {
                 mensagenDeErro("opção invalido ou nao existente");
