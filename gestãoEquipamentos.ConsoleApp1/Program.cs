@@ -440,12 +440,23 @@ namespace gestãoEquipamentos.ConsoleApp1
                     nomeSolicitante[i] = Console.ReadLine();
                     if (VerficarNome(nomeSolicitante[i]))
                         goto volta7;
-
+                    volta:
                     Console.WriteLine("digite o email do solicitante");
                     emailSolicitante[i] = Console.ReadLine();
-
+                    if (emailSolicitante[i] == "")
+                    {
+                        mensagenDeErro("email nao poder ser vazio");
+                        goto volta;
+                    }
+                    volta2:
                     Console.WriteLine("digite o telefone do solicitante");
                     telefoneSolicitante[i] = Console.ReadLine();
+                    if (telefoneSolicitante[i] == "" || telefoneSolicitante[i].Trim().Length < 9)
+                    {
+                        mensagenDeErro("email nao poder ser vazio");
+                        goto volta2;
+                    }
+
                     mensagenDeSucesso("solicitante registrado com successo");
                     break;
                 }
