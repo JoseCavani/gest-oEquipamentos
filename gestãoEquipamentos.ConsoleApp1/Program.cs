@@ -146,7 +146,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                                 removerChamada(solicitanteChamada, nomeSolicitante, dataAbertura,descricao, existeChamada,ref chamdaAberto, nome, titulo);
                                 break;
                             case "5":
-                                encerarchamda(nome, existeChamada, titulo, descricao, dataAbertura, chamdaAberto, solicitanteChamada, nomeSolicitante);
+                                encerarChamda(nome, existeChamada, titulo, descricao, dataAbertura, chamdaAberto, solicitanteChamada, nomeSolicitante);
                                 break;
                             case "s":
                                 break;
@@ -209,7 +209,7 @@ namespace gestãoEquipamentos.ConsoleApp1
         fim:;
         }
 
-        private static void encerarchamda(string[] nome, bool existeChamada, string[,] titulo, string[,] descricao, DateTime[,] dataAbertura, bool[,] chamdaAberto, int[] solicitanteChamada, string[] nomeSolicitante)
+        private static void encerarChamda(string[] nome, bool existeChamada, string[,] titulo, string[,] descricao, DateTime[,] dataAbertura, bool[,] chamdaAberto, int[] solicitanteChamada, string[] nomeSolicitante)
         {
             while (true)
             {
@@ -225,6 +225,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                 if(haChamda == false)
                 {
                     mensagenDeErro("nao existem chamadas para encerrar");
+                    Console.ReadKey();
                     goto fim;
                 }
             volta:
