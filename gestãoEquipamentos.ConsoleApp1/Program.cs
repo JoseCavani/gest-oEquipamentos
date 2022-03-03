@@ -13,7 +13,7 @@ namespace gestãoEquipamentos.ConsoleApp1
             DateTime[] dataFabricacao = new DateTime[1000];
             string[] fabricante = new string[1000];
             bool abertoOuFechado = true;
-            int opcao = 0;
+            string opcao = "";
             bool existeChamada = false;
 
             string[,] titulo = new string[1000,1000];
@@ -68,142 +68,136 @@ namespace gestãoEquipamentos.ConsoleApp1
             while (true)
             {
                 Console.Clear();
-                opcao = selecionarOpcao("digite uma opção \n" +
-                "1 - equipamentos\n" +
-                "2 - chamadas\n" +
-                "3 - solicitantes\n" +
-                "4 - maquinas com maiores problemas\n" +
-                "5 - sair");
+                opcao = selecionarOpcao("Digite uma opção \n" +
+                "1 - Equipamentos\n" +
+                "2 - Chamadas\n" +
+                "3 - Solicitantes\n" +
+                "4 - Maquinas com maiores problemas\n" +
+                "s - Sair");
 
                 switch (opcao)
                 {
-                    case 1:
+                    case "1":
                         Console.Clear();
-                        opcao = selecionarOpcao("digite uma opção \n" +
-              "1 - mostrar equipamentos\n" +
-              "2 - registar Equipamentos\n" +
-              "3 - editar Equipamentos\n" +
-              "4 - remover Equipmanetos\n" +
-              "5 - sair");
+                        opcao = selecionarOpcao("Digite uma opção \n" +
+              "1 - Mostrar equipamentos\n" +
+              "2 - Registar equipamentos\n" +
+              "3 - Editar equipamentos\n" +
+              "4 - Excluir equipmanetos\n" +
+              "s - Voltar");
                         switch (opcao)
                         {
-                            case 1:
+                            case "1":
                                 Console.Clear();
                                 mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
                                 Console.ReadKey();
                                 break;
-                            case 2:
+                            case "2":
                                 Console.Clear();
                                 registarEquipamento(ref nome, ref preco, ref numeroSerie, ref dataFabricacao, ref fabricante);
                                 Console.ReadKey();
                                 break;
-                            case 3:
+                            case "3":
                                 Console.Clear();
                                 editarEquipamento(ref nome, ref preco, ref numeroSerie, ref dataFabricacao, ref fabricante);
-                                Console.ReadKey();
                                 break;
-                            case 4:
+                            case "4":
                                 Console.Clear();
                                 removerEquipmaneto(chamdaAberto, titulo, ref nome, ref preco, ref numeroSerie, ref dataFabricacao, ref fabricante);
-                                Console.ReadKey();
                                 break;
-                            case 5:
+                            case "s":
                                 break;
                             default:
-                                mensagenDeErro("numero invalido");
+                                mensagenDeErro("Numero invalido");
                                 Console.ReadKey();
                                 break;
                         }
                         break;
 
 
-                    case 2:
+                    case "2":
                         Console.Clear();
-                        opcao = selecionarOpcao("digite uma opção \n" +
+                        opcao = selecionarOpcao("Digite uma opção \n" +
               "1 - Mostrar chamadas\n" +
               "2 - Registar nova chamda\n" +
               "3 - Editar chamada\n" +
               "4 - Excluir chamda\n" +
-              "5 - sair");
+              "s - Voltar");
                         switch (opcao)
                         {
-                            case 1:
+                            case "1":
                                 Console.Clear();
                                 abertoOuFechado = abertoOuFechados(abertoOuFechado);
                                 mostrarChamadas(abertoOuFechado, chamdaAberto, nome, existeChamada, titulo, descricao, dataAbertura, nomeSolicitante, solicitanteChamada);
                                 Console.ReadKey();
                                 break;
-                            case 2:
+                            case "2":
                                 Console.Clear();
                                 registarNovaChamda(ref chamdaAberto, ref nome, ref titulo, ref descricao, ref dataAbertura, nomeSolicitante, ref solicitanteChamada);
                                 Console.ReadKey();
                                 break;
-                            case 3:
+                            case "3":
                                 Console.Clear();
                                 editarChamda(ref existeChamada, chamdaAberto, ref nome, ref titulo, ref descricao, ref dataAbertura, ref solicitanteChamada, nomeSolicitante);
-                                Console.ReadKey();
                                 break;
-                            case 4:
+                            case "4":
                                 Console.Clear();
-                                excuilrChamada(solicitanteChamada, nomeSolicitante, dataAbertura,descricao, existeChamada,ref chamdaAberto, nome, titulo);
-                                Console.ReadKey();
+                                removerChamada(solicitanteChamada, nomeSolicitante, dataAbertura,descricao, existeChamada,ref chamdaAberto, nome, titulo);
                                 break;
-                            case 5:
+                            case "s":
                                 break;
                             default:
-                                mensagenDeErro("numero invalido");
+                                mensagenDeErro("Numero invalido");
                                 Console.ReadKey();
                                 break;
                         }
 
                         break;
 
-                    case 3:
+                    case "3":
                         Console.Clear();
-                        opcao = selecionarOpcao("digite uma opção \n" +
+                        opcao = selecionarOpcao("Digite uma opção \n" +
               "1 - Mostrar solicitante\n" +
               "2 - Registar novo solicitante\n" +
               "3 - Editar solicitante\n" +
               "4 - Excluir solicitante\n" +
-              "5 - sair");
+              "s - Voltar");
                         switch (opcao)
                         {
-                            case 1:
+                            case "1":
                                 Console.Clear();
                                 mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
                                 Console.ReadKey();
                                 break;
-                            case 2:
+                            case "2":
                                 Console.Clear();
                                 registrarSolicitante(ref nomeSolicitante, ref emailSolicitante, ref telefoneSolicitante);
                                 Console.ReadKey();
                                 break;
-                            case 3:
+                            case "3":
                                 Console.Clear();
                                 editarSolicitante(ref nomeSolicitante, ref emailSolicitante, ref telefoneSolicitante);
-                                Console.ReadKey();
                                 break;
-                            case 4:
+                            case "4":
                                 Console.Clear();
                                 removerSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
-                                Console.ReadKey();
                                 break;
-                            case 5:
+                            case "s":
                                 break;
                             default:
-                                mensagenDeErro("numero invalido");
+                                mensagenDeErro("Numero invalido");
                                 Console.ReadKey();
                                 break;
                         }
                         break;
-                    case 4:
+                    case "4":
                         Console.Clear();
                         maquinasNumeroProblemas(nome, titulo);
                         break;
-                    case 5:
+                    case "s":
                         goto fim;
                     default:
-                        mensagenDeErro("numero invalido");
+                        mensagenDeErro("Numero invalido");
                         Console.ReadKey();
                         break;
                 }
@@ -258,14 +252,16 @@ namespace gestãoEquipamentos.ConsoleApp1
 
         private static void removerSolicitante(string[] nomeSolicitante, string[] emailSolicitante, string[] telefoneSolicitante)
         {
-            bool haSolicitante = haSolicitantes(nomeSolicitante);
-            if (haSolicitante == false)
-            {
-                mensagenDeErro("nao existe solicitante");
-                goto fim;
-            }
+           
             while (true)
             {
+                bool haSolicitante = haSolicitantes(nomeSolicitante);
+                if (haSolicitante == false)
+                {
+                    mensagenDeErro("nao existe solicitante");
+                    Console.ReadKey();
+                    goto fim;
+                }
                 mostrarSolicitante(nomeSolicitante, emailSolicitante, telefoneSolicitante);
             volta:
                 Console.WriteLine("qual o numero do solicitante que deseja excluir?" +
@@ -284,6 +280,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                 emailSolicitante[removerNumero] = default;
                 telefoneSolicitante[removerNumero] = default;
                 mensagenDeSucesso("solicitante removido com sucesso");
+                Console.ReadKey();
             }
         fim:;
         }
@@ -309,6 +306,7 @@ namespace gestãoEquipamentos.ConsoleApp1
             if (haSolicitante == false)
             {
                 mensagenDeErro("nao existe solicitante");
+                Console.ReadKey();
                 goto fim;
             }
             while(true){
@@ -362,6 +360,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                         break;
                 }
                 mensagenDeSucesso("solicitante editado com sucesso");
+                Console.ReadKey();
             }
             fim:;
         }
@@ -403,16 +402,18 @@ namespace gestãoEquipamentos.ConsoleApp1
             }
         }
 
-        private static void excuilrChamada(int[] solicitanteChamada, string[] nomeSolicitante, DateTime[,] dataAbertura, string[,] descricao,bool existeChamada,ref bool[,] chamdaAberto, string[] nome, string[,] titulo)
+        private static void removerChamada(int[] solicitanteChamada, string[] nomeSolicitante, DateTime[,] dataAbertura, string[,] descricao,bool existeChamada,ref bool[,] chamdaAberto, string[] nome, string[,] titulo)
         {
-            bool haEquipamento = veSeHaEquipamento(nome);
-
-            if (haEquipamento == false)
-            {
-                mensagenDeErro("não ha equipamento");
-                goto fim;
-            }
+            
             while (true){
+                bool haEquipamento = veSeHaEquipamento(nome);
+
+                if (haEquipamento == false)
+                {
+                    mensagenDeErro("não ha equipamento");
+                    Console.ReadKey();
+                    goto fim;
+                }
                 mostrarChamadas(true, chamdaAberto, nome, existeChamada, titulo, descricao, dataAbertura, nomeSolicitante, solicitanteChamada);
             volta:
                 Console.WriteLine("qual o numero do equipamento com a chamda ao qual quer exluir\n" +
@@ -450,6 +451,7 @@ namespace gestãoEquipamentos.ConsoleApp1
 
                 chamdaAberto[alterarNumero, alterarNumeroChamda] = false;
                 mensagenDeSucesso("chamda excluida com sucesso");
+                Console.ReadKey();
             }
         fim:;
         }
@@ -463,6 +465,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                 if (haEquipamento == false)
                 {
                     mensagenDeErro("não ha equipamento");
+                    Console.ReadKey();
                     goto fim;
                 }
                 mostrarChamadas(true, chamdaAberto, nome, existeChamada, titulo, descricao, dataAbertura, nomeSolicitante, solicitanteChamada);
@@ -552,6 +555,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                         break;
                 }
                 mensagenDeSucesso("chamada editada com sucesso");
+                Console.ReadKey();
             }
         fim:;
         }
@@ -647,15 +651,16 @@ namespace gestãoEquipamentos.ConsoleApp1
 
         private static void removerEquipmaneto(bool[,] chamdaAberto, string[,] titulo,ref string[] nome,ref decimal[] preco,ref string[] numeroSerie,ref DateTime[] dataFabricacao,ref string[] fabricante)
         {
-            bool haEquipamento = veSeHaEquipamento(nome);
-
-            if (haEquipamento == false)
-            {
-                mensagenDeErro("não ha equipamentos");
-                goto fim;
-            }
             while (true)
             {
+                bool haEquipamento = veSeHaEquipamento(nome);
+
+                if (haEquipamento == false)
+                {
+                    mensagenDeErro("não ha equipamentos");
+                    Console.ReadKey();
+                    goto fim;
+                }
                 mostrarEquipamentos(nome, preco, numeroSerie, dataFabricacao, fabricante);
             volta:
                 Console.WriteLine("qual o numero do equipamento que deseja remover?\n" +
@@ -676,7 +681,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                     if (chamdaAberto[removerNumero, i] == true)
                     {
                         mensagenDeErro("equipamento contem chamadas");
-                        break;
+                        goto volta;
                     }
                 }
                 nome[removerNumero] = default;
@@ -685,6 +690,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                 dataFabricacao[removerNumero] = default;
                 fabricante[removerNumero] = default;
                 mensagenDeSucesso("item removido com sucesso");
+                Console.ReadKey();
             }
         fim:;
         }
@@ -696,6 +702,7 @@ namespace gestãoEquipamentos.ConsoleApp1
             if (haEquipamento == false)
             {
                 mensagenDeErro("não ha equipamentos");
+                Console.ReadKey();
                 goto fim;
             }
             while (true)
@@ -766,6 +773,7 @@ namespace gestãoEquipamentos.ConsoleApp1
                         break;
                 }
                 mensagenDeSucesso("equipmaneto editado com sucesso");
+                Console.ReadKey();
             }
         fim:;
         }
@@ -851,16 +859,10 @@ namespace gestãoEquipamentos.ConsoleApp1
             }
         }
 
-        static int selecionarOpcao(string mensagen)
+        static string selecionarOpcao(string mensagen)
         {
-        volta:
-            Console.WriteLine(mensagen);
-            if (!(int.TryParse(Console.ReadLine(), out int opcao)))
-            {
-                mensagenDeErro("opção invalido ou nao existente");
-                goto volta;
-            }
-            return opcao;
+           Console.WriteLine(mensagen);
+            return Console.ReadLine().ToLower();
         }
 
         private static void mensagenDeErro(string mensagen)
