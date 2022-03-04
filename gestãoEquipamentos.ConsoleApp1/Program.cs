@@ -313,6 +313,7 @@ namespace gestãoEquipamentos.ConsoleApp1
         {
             int contador = 1;// valor default de um int[] e 0 então fiz isso para que possa mostrar todos os equipamentos independte se tem ou nao chamdados
             int[] qunatidadeChamadas = new int[1000];
+            int[] idEquipamento = new int[1000];
             for (int i = 0; i < 1000; i++)
             {
                 if (nome[i] == null) //1
@@ -327,13 +328,14 @@ namespace gestãoEquipamentos.ConsoleApp1
                     }
                 //1                         3
                 qunatidadeChamadas[i] = contador;
+                idEquipamento[i] = i;
                 contador = 1;
             }
-            Array.Sort(qunatidadeChamadas, nome);
+            Array.Sort(qunatidadeChamadas, idEquipamento);
             for (int i = qunatidadeChamadas.Length - 1; i >= 0; i--)
             {
                 if (qunatidadeChamadas[i] != 0)
-                    Console.WriteLine($"maquina : {nome[i]} contem : {qunatidadeChamadas[i] - 1} chamdas");//{qunatidadeChamadas[i] - 1} pq inicializei com um
+                    Console.WriteLine($"maquina : {idEquipamento[i]} contem : {qunatidadeChamadas[i] - 1} chamdas");//{qunatidadeChamadas[i] - 1} pq inicializei com um
             }
             Console.ReadKey();
         }
