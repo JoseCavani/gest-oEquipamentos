@@ -57,6 +57,25 @@ namespace gestãoEquipamentos.ConsoleApp1
             solicitanteChamada[0] = 0;
             chamdaAberto[0, 1] = false;
 
+            titulo[1, 0] = "tit3";
+            descricao[1, 0] = "desc3";
+            dataAbertura[1, 0] = new DateTime(2027, 02, 02);
+            solicitanteChamada[0] = 0;
+            chamdaAberto[1, 0] = true;
+
+            titulo[1, 1] = "tit4";
+            descricao[1, 1] = "desc4";
+            dataAbertura[1, 1] = new DateTime(2027, 02, 02);
+            solicitanteChamada[1] = 0;
+            chamdaAberto[1, 1] = true;
+
+            titulo[1, 2] = "tit5";
+            descricao[1, 2] = "desc5";
+            dataAbertura[1, 2] = new DateTime(2027, 02, 02);
+            solicitanteChamada[2] = 0;
+            chamdaAberto[1, 2] = true;
+
+
             nome[1] = "nome2";
             preco[1] = 1995;
             numeroSerie[1] = "abc1563";
@@ -310,12 +329,11 @@ namespace gestãoEquipamentos.ConsoleApp1
                 qunatidadeChamadas[i] = contador;
                 contador = 1;
             }
-            Array.Sort(qunatidadeChamadas);
-            Array.Reverse(qunatidadeChamadas);
-            for (int i = 0; i < qunatidadeChamadas.Length; i++)
+            Array.Sort(qunatidadeChamadas, nome);
+            for (int i = qunatidadeChamadas.Length - 1; i >= 0; i--)
             {
                 if (qunatidadeChamadas[i] != 0)
-                    Console.WriteLine($"maquina : {i} contem : {qunatidadeChamadas[i] - 1} chamdas");//{qunatidadeChamadas[i] - 1} pq inicializei com um
+                    Console.WriteLine($"maquina : {nome[i]} contem : {qunatidadeChamadas[i] - 1} chamdas");//{qunatidadeChamadas[i] - 1} pq inicializei com um
             }
             Console.ReadKey();
         }
